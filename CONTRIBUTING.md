@@ -1,11 +1,11 @@
-# Contributing to Sleek Portfolio
+# Contributing
 
-Thank you for considering contributing to Sleek Portfolio! This document outlines the standards and guidelines for contributing to this project.
+Thank you for considering contributing! This document outlines the standards and guidelines for contributing to this project.
 
 ## Project Structure
 
 ```
-sleek-portfolio/
+bhavishya-portfolio/
 ├── public/              # Static assets
 │   ├── assets/         # General assets
 │   ├── blog/           # Blog post images
@@ -224,4 +224,4 @@ If you have questions about contributing, please:
 2. Create a new issue with the `question` label
 3. Join our community discussions
 
-Thank you for contributing to Sleek Portfolio! 🎉
+Thank you for contributing! 🎉

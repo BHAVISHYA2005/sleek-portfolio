@@ -4,6 +4,8 @@ export interface NavItem {
 }
 
 export const navbarConfig = {
+  /** Shown beside the logo; keep short for the header. */
+  siteTitle: 'Bhavishya',
   logo: {
     src: '/assets/bhavishya-profile.png',
     alt: 'Bhavishya',

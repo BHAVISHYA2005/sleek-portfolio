@@ -11,7 +11,8 @@ export interface PageMeta {
 
 export const siteConfig = {
   name: heroConfig.name,
-  title: 'Bhavishya — Portfolio',
+  /** Short site / brand name (Open Graph `site_name`, share previews). */
+  title: 'Bhavishya',
   description: 'Software engineer · Backend, APIs, cloud-native systems',
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
   ogImage: '/meta/opengraph-image.png',
@@ -61,12 +62,7 @@ export const pageMetadata: Record<string, PageMeta> = {
     title: 'Work Experience - Professional Journey',
     description:
       'Open source and engineering experience across CNCF ecosystems and product work.',
-    keywords: [
-      'work experience',
-      'open source',
-      'CNCF',
-      'software engineer',
-    ],
+    keywords: ['work experience', 'open source', 'CNCF', 'software engineer'],
     ogImage: '/meta/work.png',
     twitterCard: 'summary_large_image',
   },
@@ -82,8 +78,7 @@ export const pageMetadata: Record<string, PageMeta> = {
 
   '/blog': {
     title: 'Blog - Thoughts & Tutorials',
-    description:
-      'Notes on engineering, programming, and web development.',
+    description: 'Notes on engineering, programming, and web development.',
     keywords: ['blog', 'tutorials', 'programming', 'web development'],
     ogImage: '/meta/blogs.png',
     twitterCard: 'summary_large_image',
@@ -99,8 +94,7 @@ export const pageMetadata: Record<string, PageMeta> = {
 
   '/gears': {
     title: 'Gears - My Setup & Tools',
-    description:
-      'Tools, devices, and software I use for development.',
+    description: 'Tools, devices, and software I use for development.',
     keywords: ['setup', 'tools', 'development environment'],
     ogImage: '/meta/gears.png',
     twitterCard: 'summary_large_image',
@@ -108,8 +102,7 @@ export const pageMetadata: Record<string, PageMeta> = {
 
   '/setup': {
     title: 'Setup Guide - VS Code Configuration',
-    description:
-      'VS Code configuration, extensions, and fonts.',
+    description: 'VS Code configuration, extensions, and fonts.',
     keywords: ['vscode', 'setup', 'extensions', 'guide'],
     ogImage: '/meta/setup.png',
     twitterCard: 'summary_large_image',
