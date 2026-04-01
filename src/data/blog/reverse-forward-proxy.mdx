@@ -1,0 +1,141 @@
+---
+title: 'Understanding Reverse Proxy & Forward Proxy'
+description: 'Learn the difference between forward proxies and reverse proxies, their use cases, and how to implement them in large systems.'
+image: '/blog/proxy.png'
+tags: ['backend', 'networking', 'system-design']
+date: '2025-10-16'
+isPublished: true
+---
+
+# Understanding Reverse Proxy & Forward Proxy
+
+There has been considerable confusion among developers regarding these two terms, which are often referenced when discussing system design concepts. Today, I will explain how both are implemented in large systems, their use cases, and the tools commonly used to implement them.
+
+## What is a Proxy?
+
+A proxy acts as an intermediary between a client (such as a browser) and a server (such as a website). Generally, the proxy server handles requests directed at a server to provide functions such as preventing malicious attacks, blocking access to harmful websites, and improving the performance of certain virtual machines.
+
+## Forward Proxy
+
+A forward proxy acts **on behalf of the client**, sitting between users and the internet. Think of the client as your browser and the website which you are visiting as the server which you are trying to hit with an HTTP request.
+
+The main purpose of a Forward Proxy is to improve performance, hide client identity, filter outgoing requests, and manage network access (common in schools or corporate networks).
+
+### Use Cases:
+
+- Circumventing geo-restrictions
+- Content filtering (school or office firewalls)
+- User anonymity or caching for faster access
+
+A forward proxy can be implemented with tools such as Squid Proxy, HAProxy (forward mode). You might be wondering why I have not used Nginx, because it's used for reverse proxy and not implementing forward proxy.
+
+### Example Implementation:
+
+```javascript
+import http from 'http';
+
+// The forward proxy intercepts outbound requests from clients to external servers.
+const forwardProxy = http.createServer((clientReq, clientRes) => {
+  // Define the target destination — typically determined dynamically from the client request.
+  const options = {
+    hostname: 'httpbin.org', // external target server
+    port: 80,
+    path: clientReq.url, // reuse client path for transparency
+    method: clientReq.method,
+    headers: clientReq.headers, // propagate all headers
+  };
+
+  // Create a new outbound request acting on the client's behalf.
+  const proxyReq = http.request(options, (proxyRes) => {
+    clientRes.writeHead(proxyRes.statusCode, proxyRes.headers);
+    // Stream data directly from target response to the client.
+    proxyRes.pipe(clientRes, { end: true });
+  });
+
+  // Forward request body and close when done.
+  clientReq.pipe(proxyReq, { end: true });
+
+  proxyReq.on('error', (err) => {
+    console.error(`Proxy error: ${err.message}`);
+    clientRes.writeHead(502);
+    clientRes.end('Bad Gateway');
+  });
+});
+
+forwardProxy.listen(8080, () => {
+  console.log('Forward Proxy running on port 8080');
+});
+```
+
+### How It Works:
+
+- The client sends a request to the proxy instead of the target site.
+- The proxy creates a new request to the target on behalf of the client.
+- The response flows back through the proxy to the client.
+
+The client never connects directly to `httpbin.org`, hiding its identity and centralizing control.
+
+## Reverse Proxy
+
+A reverse proxy acts **on behalf of the server**, managing incoming traffic from clients before it hits the backend servers. I have done this to distribute traffic to different servers and to have a certain request limit per minute per user to not overclock the request limit.
+
+The main purpose of a reverse proxy is to enhance security by blocking requests coming from specific ports & IPs, distribute traffic, and improve performance.
+
+### Use Cases:
+
+- Load balancing across multiple backend servers
+- Caching and compressing responses
+- SSL/TLS termination
+- Hiding internal server details from outsiders
+
+A reverse proxy can be implemented with tools such as NGINX, Apache HTTP Server, AWS CloudFront, and Traefik.
+
+### Example Implementation:
+
+```python
+from flask import Flask, request, Response
+import requests
+
+app = Flask(__name__)
+TARGET = 'http://127.0.0.1:8000'  # backend service behind the proxy
+
+@app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def reverse_proxy(path):
+    # Reconstruct the target URL with preserved query parameters.
+    url = f"{TARGET}/{path}"
+    
+    # Forward the original request while stripping host-level identity.
+    proxy_response = requests.request(
+        method=request.method,
+        url=url,
+        headers={k: v for k, v in request.headers if k.lower() != 'host'},
+        data=request.get_data(),
+        cookies=request.cookies,
+        allow_redirects=False)
+    
+    # Mirror backend response to client with all headers preserved.
+    response = Response(proxy_response.content, proxy_response.status_code)
+    for name, value in proxy_response.headers.items():
+        response.headers[name] = value
+    
+    return response
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+```
+
+### How It Works:
+
+- The client connects to the proxy endpoint (e.g., `http://proxy:5000/service/api`).
+- The proxy forwards those requests to internal backend services.
+- Response headers and bodies are passed back transparently.
+
+This protects internal infrastructure and allows SSL termination, load balancing, or centralized routing.
+
+## Summary
+
+- **Forward Proxy** sits in front of _clients_, handling outbound traffic.
+- **Reverse Proxy** sits in front of _servers_, handling inbound traffic.
+- Both can perform caching, routing, filtering, or security enforcement — but they operate in opposite directions.
+
+I hope this blog provided you with a deep understanding of the topic. Feedback is always welcome! Do follow me on my socials: [GitHub](https://github.com), [LinkedIn](https://linkedin.com)

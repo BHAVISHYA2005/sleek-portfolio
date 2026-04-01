@@ -1,0 +1,81 @@
+---
+title: 'Why We Chose Go and WebAssembly Over React for Our Frontend'
+description: 'Exploring why Dagger switched from React to Go and WebAssembly, the challenges they faced, and lessons learned.'
+image: '/blog/go-wasm.png'
+tags: ['go', 'webassembly', 'frontend', 'performance']
+date: '2025-02-12'
+isPublished: true
+---
+
+# Why We Chose Go and WebAssembly Over React for Our Frontend
+
+In a recent update, Dagger introduced Dagger Cloud v3, unveiling a redesigned user interface (UI) developed using Go and WebAssembly (WASM). This strategic shift aimed to unify their terminal and web interfaces, enhancing performance and streamlining development efforts.
+
+## Challenges with Dual Codebases
+
+Previously, Dagger maintained two separate UIs: a terminal-based interface (TUI) built with Go and a web dashboard crafted using React. This dual-codebase approach led to significant challenges:
+
+- **Feature Synchronization**: Keeping features consistent across two separate codebases became increasingly difficult
+- **Performance Issues**: The React-based web UI often struggled with performance, becoming laggy under heavy data loads
+- **Data Processing**: Handling complex event streams with vast amounts of data proved challenging in JavaScript
+
+The React frontend couldn't keep pace with the terminal interface's performance, creating a frustrating user experience during complex data rendering scenarios.
+
+## Rationale for Choosing Go and WebAssembly
+
+To address these challenges, the Dagger team sought to consolidate their codebases. Given their expertise in Go, they decided to leverage Go for both interfaces. By utilizing WebAssembly, they enabled Go code to run directly in web browsers, facilitating a **unified development approach**.
+
+### Key Advantages
+
+- **Single Language**: Write once in Go, deploy everywhere (terminal and web)
+- **Better Performance**: Go's compiled nature provides superior performance compared to interpreted JavaScript
+- **Type Safety**: Maintain strong typing across the entire codebase
+- **Reduced Duplication**: One codebase means less code to maintain
+
+However, this decision came with its own set of challenges, including the relative immaturity of the Go and WebAssembly ecosystem and inherent memory limitations in browsers.
+
+## Implementation Strategy
+
+The team adopted the **Go-app framework**, designed for Progressive Web Apps (PWAs) in WebAssembly. This framework provided benefits such as:
+
+- **Rapid Compilation**: Go's fast compile times improved developer experience
+- **Native Static Typing**: Leveraging Go's type system for safer code
+- **PWA Support**: Building progressive web apps with Go's reliability
+
+Despite initial skepticism due to the nascent ecosystem and potential integration challenges, a prototyping phase revealed that the approach was feasible, with manageable obstacles primarily related to memory optimization.
+
+## Outcomes and Recommendations
+
+Transitioning to a Go and WebAssembly-based UI resulted in significant improvements:
+
+✅ **More consistent user experience** across Dagger's platforms  
+✅ **Notable performance improvements** during complex data rendering  
+✅ **Reduced memory usage** compared to the React implementation  
+✅ **Unified codebase** reducing duplication and code maintenance overhead  
+✅ **Faster feature development** without switching contexts between languages
+
+## Lessons and Considerations
+
+While this approach proved beneficial for Dagger, they caution that **it may not be suitable for all scenarios**. Their decision was influenced by specific factors:
+
+- Team expertise in Go programming
+- Complexity of UI requirements (heavy data processing)
+- Need for codebase standardization
+- Performance-critical applications
+
+**Organizations considering a similar transition should carefully evaluate:**
+
+1. Your team's expertise (do you have strong Go skills?)
+2. The nature of your UI (data-heavy? complex interactions?)
+3. The browser compatibility you need to support
+4. The ecosystem maturity for your specific use case
+
+## Dagger Cloud v3 and Beyond
+
+Dagger Cloud v3 remains in beta, and the team welcomes feedback from users to further refine the new UI. This move demonstrates that alternative frontend technologies can deliver superior results when the problem and solution are properly aligned.
+
+The Go + WebAssembly approach isn't a replacement for React or Vue in all cases, but for performance-critical, data-heavy applications with Go backends, it's a compelling option worth exploring.
+
+---
+
+**Key Takeaway**: Sometimes the best tool for the job isn't the most popular one. Evaluate your specific constraints, team strengths, and performance requirements before defaulting to mainstream frontend frameworks.
