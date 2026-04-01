@@ -1,7 +1,7 @@
 ---
 title: 'Understanding Reverse Proxy & Forward Proxy'
 description: 'Learn the difference between forward proxies and reverse proxies, their use cases, and how to implement them in large systems.'
-image: '/blog/proxy.png'
+image: '/blog/reverse-proxy-flow.png'
 tags: ['backend', 'networking', 'system-design']
 date: '2025-10-16'
 isPublished: true
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 - The proxy forwards those requests to internal backend services.
 - Response headers and bodies are passed back transparently.
 
-This protects internal infrastructure and allows SSL termination, load balancing, or centralized routing.
+This protects internal infrastructure and allows SSL termination, load balancing, or centralized routing. The diagram shows how multiple clients connect through the reverse proxy to origin servers.
 
 ## Summary
 
