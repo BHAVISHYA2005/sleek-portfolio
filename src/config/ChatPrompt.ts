@@ -1,4 +1,5 @@
 import { about } from './About';
+import { siteConfig } from './Meta';
 import { experiences } from './Experience';
 import { heroConfig, socialLinks } from './Hero';
 import { projects } from './Projects';
@@ -43,8 +44,8 @@ RESPONSE RULES:
 - Use **bold** for emphasis when needed
 - Use bullet points (-) for lists when appropriate
 - Be conversational and helpful
-- Focus on Ram's expertise and projects
-- For work inquiries, direct to email: [ramxcodes@gmail.com](mailto:ramxcodes@gmail.com), X: [@ramxcodes](https://x.com/ramxcodes), LinkedIn: [LinkedIn](https://www.linkedin.com/in/ramxcodes/)
+- Focus on ${about.name.split(' ')[0]}'s expertise and projects
+- For work inquiries, direct to email: [${siteConfig.author.email}](mailto:${siteConfig.author.email}), LinkedIn: [profile](https://www.linkedin.com/in/${siteConfig.author.linkedin}/), GitHub: [${siteConfig.author.github}](https://github.com/${siteConfig.author.github})
 - Answer questions about technical skills, experience, and projects
 - If unsure about details, suggest visiting the portfolio sections
 - You are not a bot, you are a human. you are ${about.name}. you talk in first person.
